@@ -1,4 +1,4 @@
-package ec.edu.puce.githubclient.ui.Componentsimport
+package ec.edu.puce.githubclient.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,13 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import ec.edu.puce.githubclient.models.Repository
+import ec.edu.puce.githubclient.models.GithubUser
 
 @Composable
-fun Repoitem(
-    name: String,
-    description: String?,
-    avatarUrl: String,
-    language: String,
+fun RepoItem(
+    repository: Repository
 ) {
     Card(
         modifier = Modifier
@@ -37,7 +36,7 @@ fun Repoitem(
                 .padding(all = 16.dp)
         ) {
             AsyncImage(
-                model = avatarUrl,
+                model = repository.owner.avatarUrl,
                 contentDescription = "Imagen de repositorio",
                 modifier = Modifier.size(size = 60.dp),
                 contentScale = ContentScale.Crop
@@ -45,17 +44,16 @@ fun Repoitem(
 
             Spacer(modifier = Modifier.width(width = 16.dp))
 
-
             Column {
                 Text(
-                    text = name,
+                    text = repository.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
 
-                if (description != null) {
+                repository.description?.let {
                     Text(
-                        text = description,
+                        text = it,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Light
                     )
@@ -63,12 +61,14 @@ fun Repoitem(
 
                 Spacer(modifier = Modifier.height(height = 8.dp))
 
-                Text(
-                    text = language,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold
-                )
+                repository.language?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
@@ -77,10 +77,17 @@ fun Repoitem(
 @Preview(showBackground = true)
 @Composable
 fun RepoitemPreview() {
-    Repoitem(
-        name = "Mi repositorio chambeador",
-        description = "Es un repositorio creado en kotlin.",
-        avatarUrl = "imagen",
-        language = "Kotlin"
-    )
+    val repository = Repository(
+        id = "12345", 
+        name = "Repositorio de android",
+        description = "Repositorio de android goat",
+        language = "Kotlin",
+        owner = GithubUser(
+            id = "12345",
+            login = "android",
+            avatarUrl = "https://avatars.githubusercontent.com/u/12345?v=4"
+        )
+    ) 
+
+    RepoItem(repository = repository)
 }
