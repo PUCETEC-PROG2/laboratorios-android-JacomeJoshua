@@ -1,5 +1,4 @@
 package ec.edu.puce.githubclient.viewmodels
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ec.edu.puce.githubclient.models.Repository
